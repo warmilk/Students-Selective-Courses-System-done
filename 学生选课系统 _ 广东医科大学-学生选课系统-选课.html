@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<!-- saved from url=(0050)http://localhost:6602/StudentsCourseSelection/Home -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="shortcut icon" href="./学生选课系统 _ 广东医科大学-学生选课系统-选课_files/logo.ico" type="image/x-icon">
+    <title>学生选课系统 | 广东医科大学-学生选课系统-选课</title>
+    
+    <!--[if lt IE 9]>
+        <script src="学生选课系统 _ 广东医科大学-学生选课系统-选课_files/html5shiv/html5shiv-printshiv.min.js"></script>
+        <script type="text/javascript" src="学生选课系统 _ 广东医科大学-学生选课系统-选课_files/html5shiv/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <link href="./学生选课系统 _ 广东医科大学-学生选课系统-选课_files/loaders.css" rel="stylesheet">
+    <!-- 从外部引入这个页面用到的小icon的iconfont -->
+    <link rel="stylesheet" type="text/css" href="./学生选课系统 _ 广东医科大学-学生选课系统-选课_files/font/font_3xfq2v964oyldi.css">
+    <!-- 这个页面的css -->
+    <link rel="stylesheet" type="text/css" href="./学生选课系统 _ 广东医科大学-学生选课系统-选课_files/CourseSelection.css">
+    <!--[if lt IE 9]>
+       <link rel="stylesheet" type="text/css" href="学生选课系统 _ 广东医科大学-学生选课系统-选课_files/ie8-and-down.css" rel="stylesheet" />
+    <![endif]-->
+    <script src="./学生选课系统 _ 广东医科大学-学生选课系统-选课_files/jquery-1.8.2.min.js"></script>
+    
+</head>
+<body>
+	<div class="container">
+		
+	
+    <!--[if lt IE 9]>
+        <div class="alert-danger" role="alert">
+            你的浏览器实在<strong>太太太太太太旧了</strong>，导致页面无法完美显示渲染。放学别走，升级完浏览器再说 → <a target="_blank" class="alert-danger-anchor" href="http://browsehappy.com">立即升级</a>
+        </div>
+    <![endif]-->
+                     <!-- 在选课时间范围内的prompt -->
+        <div class="able_Select_Prompt Prompt">
+            <p><i class="xk-gantanhao xsxkxtFont"></i><strong>提示：</strong>请尽快在 <span class="warn"><span class="beginDate"><strong>2017年3月8日 18:25</strong></span></span> 到 <span class="warn"><span class="endDate"><strong>2017年4月27日 22:55</strong></span></span> 时间范围内完成选课，逾时系统将关闭！</p>
+            <button class="btn closePrompt"><i class="xk-cuo xsxkxtFont"></i></button>
+        </div>
+
+
+
+
+    <!-- 用户个人信息 -->
+    <header>
+        <div class="userInfoModify">
+            <button id="xgmm" class="btn"><i class="xk-xiugaimima2 xsxkxtFont"></i>修改密码</button>
+            <a class="btn" href="http://localhost:6602/Login/outLogin" id="zx"><i class="xk-zhuxiao xsxkxtFont"></i>注销</a>
+
+        </div>
+        <ul>
+            <li>姓名：<span id="stuName">学生1</span></li>
+            <li>
+                校区：<span id="stuCampus">
+东莞校区                </span>
+            </li>
+            <li>
+                年级：<span id="stuGrade">
+2014级                </span>
+            </li>
+            <li>
+                专业：<span id="stuMajor">
+专业1                </span>
+            </li>
+            <li>学号：<span id="stuNo">14204150489</span></li>
+        </ul>
+
+    </header>
+    
+    <!-- 三个table和一个回到顶部按钮 -->
+    <main>
+        <!-- 进度条-->
+        <div class="PopupBox" id="load-wrapp" style="display: none;width:150px">
+            <div id="jiaZaiDongHua">
+                <div class="loader">
+                    <div class="semi-circle-spin">
+                        <div></div>
+                    </div>
+                </div>
+                <span class="loader-text">努力加载中...</span>
+            </div>
+        </div>
+            
+
+            <!-- 修改密码弹出框 -->
+            <div class="PopupBox" id="passwordModify" style="display: none;">
+                <h4 class="PopupBox-title title">修改密码</h4>
+                <button class="btn closePrompt" id="closePswModi"><i class="xk-cuo xsxkxtFont"></i></button>
+                <div class="pwModiContent">
+
+                    <div>
+                        <label><span class="left">验证旧密码：</span><input type="password" id="oldPwd" placeholder="请输入6-12位的旧密码"></label>
+
+                    </div>
+                    <div>
+                        <label><span class="left">请设置新密码：</span><input type="password" id="newPwd" placeholder="请输入6-12位的新密码"></label>
+                    </div>
+                    <div>
+                        <label><span class="left">再次输入新密码：</span><input type="password" id="confirmPwd" placeholder="请输入6-12位的新密码"></label>
+                    </div>
+
+
+                    <div>
+                    	<button class="btn" type="button" onclick="editPwd();" id="qrxg">确认修改</button>
+                    </div>
+
+                </div>
+                <div id="errorPwd" style="font-size: 14px; color: red; text-align:center;display:none"></div>
+            </div>
+
+            <!-- 半透明遮罩 -->
+            <div style="position: fixed; top: 0px; left: 0px; bottom: 0px; right:0px; background: rgb(0, 0, 0) none repeat scroll 0% 0%; opacity: 0.3; z-index: 100;filter:alpha(opacity:30); display: none;" id="mask"></div>
+            <!-- 历史选课 -->
+            <div class="widget">
+            <h4 class="title">历史选课课程（<span id="numberOfSelected">0&nbsp;</span>门）</h4>
+            <button class="collapseBtn btn"><i class="xk-shouqi xsxkxtFont"></i>收起</button>
+            <table id="selectedTab" class="widgetTable">
+
+                <thead>
+                    <tr><th>开课课号</th><th>课程名称</th><th>学年</th><th>上课时间地点</th><th>任课教师</th><th>学分</th><th>是否重修</th><th>操作</th></tr>
+                </thead>
+                <tbody>
+                        <tr><td colspan="8">没有符合条件的记录</td></tr>
+
+                </tbody>
+            </table>
+
+
+            </div>
+
+            <!-- 已选择的课程 -->
+            <div class="widget">
+                    <h4 class="title">本学年已选择的课程（<span id="numberOfPresentSelect">0</span>&nbsp;门）</h4>
+                    <button class="collapseBtn btn"><i class="xk-shouqi xsxkxtFont"></i>收起</button>
+                    <table id="presentSelectTab" class="widgetTable">
+                        <thead>
+                            <tr><th>开课课号</th><th>课程名称</th><th>上课时间地点</th><th>任课教师</th><th>学分</th><th>是否重修</th><th>操作</th></tr>
+                        </thead>
+                        <tbody>
+            <tr id="nullTr"><td colspan="7">没有符合条件的记录</td></tr>
+                        </tbody>
+
+                    </table>
+
+            </div>
+
+             
+
+ <!-- 任意选修 -->
+<div class="widget">
+    <h4 class="title">任意选修课 · 课程列表（<span id="numberOfSelected">21&nbsp;</span>门）</h4>
+    <button class="collapseBtn btn"><i class="xk-shouqi xsxkxtFont"></i>收起</button>
+    <table id="xxTab" class="widgetTable">
+        <thead>
+            <tr><th>开课课号</th><th>课程名称</th><th>选课校区</th><th>上课时间地点</th><th>任课教师</th><th>学分</th><th>选课方式</th><th>限选人数</th><th>已选人数</th><th>操作</th></tr>
+        </thead>
+        <tbody>
+                     <tr><td class="kkkh_XX">kk20170319001</td><td class="kcmc_XX"><a href="javascript:popCourseDetails(23);">选修1</a></td><td class="xkxq_XX">东莞校区</td><td class="sksjdd_XX">
+第3~8周 星期三 第10-12节@李老师                            <br>
+第9~13周 星期三 第10-12节@周                            <br>
+                         
+                         </td><td class="rkjs_XX">
+李老师                                         <br>
+周                                         <br>
+                         </td><td class="xf_XX">2.0</td><td class="xkfs_XX">限选</td><td class="xxrs_XX">5</td><td class="yxrs_XX">0</td><td>
+                                <button id="selectBtn23" class="select_Btn btn" onclick="selectCourse(this,23)">选择</button>
+                                                                                                                                                                   
+                      
+                         </td></tr>
+                     <tr><td class="kkkh_XX">kk20170319002</td><td class="kcmc_XX"><a href="javascript:popCourseDetails(24);">选修2</a></td><td class="xkxq_XX">东莞校区</td><td class="sksjdd_XX">
+第3~8周 星期三 第10-12节@李老师                            <br>
+第9~13周 星期三 第10-13节@周                            <br>
+                         
+                         </td><td class="rkjs_XX">
+李老师                                         <br>
+周                                         <br>
+                         </td><td class="xf_XX">2.0</td><td class="xkfs_XX">抢课</td><td class="xxrs_XX">5</td><td class="yxrs_XX">0</td><td>
+                                <button id="selectBtn24" class="select_Btn btn" onclick="selectCourse(this,24)">选择</button>
+                                                                                                                                                                   
+                      
+                         </td></tr>
+                     <tr><td class="kkkh_XX">kk20170319003</td><td class="kcmc_XX"><a href="javascript:popCourseDetails(25);">选修3</a></td><td class="xkxq_XX">湛江校区</td><td class="sksjdd_XX">
+第3~8周 星期三 第10-12节@李老师                            <br>
+第9~13周 星期三 第10-14节@周                            <br>
+                         
+                         </td><td class="rkjs_XX">
+李老师                                         <br>
+周                                         <br>
+                         </td><td class="xf_XX">2.0</td><td class="xkfs_XX">限选</td><td class="xxrs_XX">5</td><td class="yxrs_XX">0</td><td>
+                                <button id="selectBtn25" class="select_Btn btn" onclick="selectCourse(this,25)">选择</button>
+                                                                                                                                                                   
+                      
+                         </td></tr>
+                     <tr><td class="kkkh_XX">kk20170319004</td><td class="kcmc_XX"><a href="javascript:popCourseDetails(26);">选修4</a></td><td class="xkxq_XX">主校区</td><td class="sksjdd_XX">
+第3~8周 星期三 第10-12节@李老师                            <br>
+第9~13周 星期三 第10-15节@周                            <br>
+                         
+                         </td><td class="rkjs_XX">
+李老师                                         <br>
+周                                         <br>
+                         </td><td class="xf_XX">2.0</td><td class="xkfs_XX">限选</td><td class="xxrs_XX">5</td><td class="yxrs_XX">0</td><td>
+                                <button id="selectBtn26" class="select_Btn btn" onclick="selectCourse(this,26)">选择</button>
+                                                                                                                                                                   
+                      
+                         </td></tr>
+                     <tr><td class="kkkh_XX">kk20170319005</td><td class="kcmc_XX"><a href="javascript:popCourseDetails(27);">选修5</a></td><td class="xkxq_XX">东莞校区</td><td class="sksjdd_XX">
+第3~8周 星期三 第10-12节@李老师                            <br>
+第9~13周 星期三 第10-16节@周                            <br>
+                         
+                         </td><td class="rkjs_XX">
+李老师                                         <br>
+周                                         <br>
+                         </td><td class="xf_XX">2.0</td><td class="xkfs_XX">限选</td><td class="xxrs_XX">5</td><td class="yxrs_XX">0</td><td>
+                                <button id="selectBtn27" class="select_Btn btn" onclick="selectCourse(this,27)">选择</button>
+                                                                                                                                                                   
+                      
+                         </td></tr>
+                     <tr><td class="kkkh_XX">kk20170319006</td><td class="kcmc_XX"><a href="javascript:popCourseDetails(28);">选修6</a></td><td class="xkxq_XX">湛江校区</td><td class="sksjdd_XX">
+第3~8周 星期三 第10-12节@李老师                            <br>
+第9~13周 星期三 第10-17节@周                            <br>
+                         
+                         </td><td class="rkjs_XX">
+李老师                                         <br>
+周                                         <br>
+                         </td><td class="xf_XX">2.0</td><td class="xkfs_XX">限选</td><td class="xxrs_XX">5</td><td class="yxrs_XX">0</td><td>
+                                <button id="selectBtn28" class="select_Btn btn" onclick="selectCourse(this,28)">选择</button>
+                                                                                                                                                                   
+                      
+                         </td></tr>
+                     <tr><td class="kkkh_XX">kk20170319007</td><td class="kcmc_XX"><a href="javascript:popCourseDetails(29);">选修7</a></td><td class="xkxq_XX">主校区</td><td class="sksjdd_XX">
+第3~8周 星期三 第10-12节@李老师                            <br>
+第9~13周 星期三 第10-18节@周                            <br>
+                         
+                         </td><td class="rkjs_XX">
+李老师                                         <br>
+周                                         <br>
+                         </td><td class="xf_XX">2.0</td><td class="xkfs_XX">限选</td><td class="xxrs_XX">5</td><td class="yxrs_XX">0</td><td>
+                                <button id="selectBtn29" class="select_Btn btn" onclick="selectCourse(this,29)">选择</button>
+                                                                                                                                                                   
+                      
+                         </td></tr>
+                     <tr><td class="kkkh_XX">kk20170319008</td><td class="kcmc_XX"><a href="javascript:popCourseDetails(30);">选修8</a></td><td class="xkxq_XX">东莞校区</td><td class="sksjdd_XX">
+第3~8周 星期三 第10-12节@李老师                            <br>
+第9~13周 星期三 第10-19节@周                            <br>
+                         
+                         </td><td class="rkjs_XX">
+李老师                                         <br>
+周                                         <br>
+                         </td><td class="xf_XX">2.0</td><td class="xkfs_XX">抢课</td><td class="xxrs_XX">5</td><td class="yxrs_XX">0</td><td>
+                                <button id="selectBtn30" class="select_Btn btn" onclick="selectCourse(this,30)">选择</button>
+                                                                                                                                                                   
+                      
+                         </td></tr>
+                     <tr><td class="kkkh_XX">kk20170319009</td><td class="kcmc_XX"><a href="javascript:popCourseDetails(31);">选修9</a></td><td class="xkxq_XX">主校区</td><td class="sksjdd_XX">
+第3~8周 星期三 第10-12节@李老师                            <br>
+第9~13周 星期三 第10-20节@周                            <br>
+                         
+                         </td><td class="rkjs_XX">
+李老师                                         <br>
+周                                         <br>
+                         </td><td class="xf_XX">2.0</td><td class="xkfs_XX">抢课</td><td class="xxrs_XX">5</td><td class="yxrs_XX">0</td><td>
+                                <button id="selectBtn31" class="select_Btn btn" onclick="selectCourse(this,31)">选择</button>
+                                                                                                                                                                   
+                      
+                         </td></tr>
+                     <tr><td class="kkkh_XX">kk20170319010</td><td class="kcmc_XX"><a href="javascript:popCourseDetails(32);">选修10</a></td><td class="xkxq_XX">东莞校区</td><td class="sksjdd_XX">
+第3~8周 星期三 第10-12节@李老师                            <br>
+第9~13周 星期三 第10-21节@周                            <br>
+                         
+                         </td><td class="rkjs_XX">
+李老师                                         <br>
+周                                         <br>
+                         </td><td class="xf_XX">2.0</td><td class="xkfs_XX">抢课</td><td class="xxrs_XX">5</td><td class="yxrs_XX">0</td><td>
+                                <button id="selectBtn32" class="select_Btn btn" onclick="selectCourse(this,32)">选择</button>
+                                                                                                                                                                   
+                      
+                         </td></tr>
+                     <tr><td class="kkkh_XX">kk20170319011</td><td class="kcmc_XX"><a href="javascript:popCourseDetails(33);">选修11</a></td><td class="xkxq_XX">湛江校区</td><td class="sksjdd_XX">
+第3~8周 星期三 第10-12节@李老师                            <br>
+第9~13周 星期三 第10-22节@周                            <br>
+                         
+                         </td><td class="rkjs_XX">
+李老师                                         <br>
+周                                         <br>
+                         </td><td class="xf_XX">2.0</td><td class="xkfs_XX">限选</td><td class="xxrs_XX">5</td><td class="yxrs_XX">0</td><td>
+                                <button id="selectBtn33" class="select_Btn btn" onclick="selectCourse(this,33)">选择</button>
+                                                                                                                                                                   
+                      
+                         </td></tr>
+                     <tr><td class="kkkh_XX">kk20170319012</td><td class="kcmc_XX"><a href="javascript:popCourseDetails(34);">选修12</a></td><td class="xkxq_XX">主校区</td><td class="sksjdd_XX">
+第3~8周 星期三 第10-12节@李老师                            <br>
+第9~13周 星期三 第10-23节@周                            <br>
+                         
+                         </td><td class="rkjs_XX">
+李老师                                         <br>
+周                                         <br>
+                         </td><td class="xf_XX">2.0</td><td class="xkfs_XX">抢课</td><td class="xxrs_XX">5</td><td class="yxrs_XX">0</td><td>
+                                <button id="selectBtn34" class="select_Btn btn" onclick="selectCourse(this,34)">选择</button>
+                                                                                                                                                                   
+                      
+                         </td></tr>
+                     <tr><td class="kkkh_XX">kk20170319013</td><td class="kcmc_XX"><a href="javascript:popCourseDetails(35);">选修13</a></td><td class="xkxq_XX">东莞校区</td><td class="sksjdd_XX">
+第3~8周 星期三 第10-12节@李老师                            <br>
+第9~13周 星期三 第10-24节@周                            <br>
+                         
+                         </td><td class="rkjs_XX">
+李老师                                         <br>
+周                                         <br>
+                         </td><td class="xf_XX">2.0</td><td class="xkfs_XX">限选</td><td class="xxrs_XX">5</td><td class="yxrs_XX">0</td><td>
+                                <button id="selectBtn35" class="select_Btn btn" onclick="selectCourse(this,35)">选择</button>
+                                                                                                                                                                   
+                      
+                         </td></tr>
+                     <tr><td class="kkkh_XX">kk20170319014</td><td class="kcmc_XX"><a href="javascript:popCourseDetails(36);">选修14</a></td><td class="xkxq_XX">湛江校区</td><td class="sksjdd_XX">
+第3~8周 星期三 第10-12节@李老师                            <br>
+第9~13周 星期三 第10-25节@周                            <br>
+                         
+                         </td><td class="rkjs_XX">
+李老师                                         <br>
+周                                         <br>
+                         </td><td class="xf_XX">2.0</td><td class="xkfs_XX">限选</td><td class="xxrs_XX">5</td><td class="yxrs_XX">0</td><td>
+                                <button id="selectBtn36" class="select_Btn btn" onclick="selectCourse(this,36)">选择</button>
+                                                                                                                                                                   
+                      
+                         </td></tr>
+                     <tr><td class="kkkh_XX">kk20170319015</td><td class="kcmc_XX"><a href="javascript:popCourseDetails(37);">选修15</a></td><td class="xkxq_XX">主校区</td><td class="sksjdd_XX">
+第3~8周 星期三 第10-12节@李老师                            <br>
+第9~13周 星期三 第10-26节@周                            <br>
+                         
+                         </td><td class="rkjs_XX">
+李老师                                         <br>
+周                                         <br>
+                         </td><td class="xf_XX">2.0</td><td class="xkfs_XX">抢课</td><td class="xxrs_XX">5</td><td class="yxrs_XX">0</td><td>
+                                <button id="selectBtn37" class="select_Btn btn" onclick="selectCourse(this,37)">选择</button>
+                                                                                                                                                                   
+                      
+                         </td></tr>
+                     <tr><td class="kkkh_XX">kk20170319016</td><td class="kcmc_XX"><a href="javascript:popCourseDetails(38);">选修16</a></td><td class="xkxq_XX">东莞校区</td><td class="sksjdd_XX">
+第3~8周 星期三 第10-12节@李老师                            <br>
+第9~13周 星期三 第10-27节@周                            <br>
+                         
+                         </td><td class="rkjs_XX">
+李老师                                         <br>
+周                                         <br>
+                         </td><td class="xf_XX">2.0</td><td class="xkfs_XX">抢课</td><td class="xxrs_XX">5</td><td class="yxrs_XX">0</td><td>
+                                <button id="selectBtn38" class="select_Btn btn" onclick="selectCourse(this,38)">选择</button>
+                                                                                                                                                                   
+                      
+                         </td></tr>
+                     <tr><td class="kkkh_XX">kk20170319017</td><td class="kcmc_XX"><a href="javascript:popCourseDetails(39);">选修17</a></td><td class="xkxq_XX">主校区</td><td class="sksjdd_XX">
+第3~8周 星期三 第10-12节@李老师                            <br>
+第9~13周 星期三 第10-28节@周                            <br>
+                         
+                         </td><td class="rkjs_XX">
+李老师                                         <br>
+周                                         <br>
+                         </td><td class="xf_XX">2.0</td><td class="xkfs_XX">抢课</td><td class="xxrs_XX">5</td><td class="yxrs_XX">0</td><td>
+                                <button id="selectBtn39" class="select_Btn btn" onclick="selectCourse(this,39)">选择</button>
+                                                                                                                                                                   
+                      
+                         </td></tr>
+                     <tr><td class="kkkh_XX">kk20170319018</td><td class="kcmc_XX"><a href="javascript:popCourseDetails(40);">选修18</a></td><td class="xkxq_XX">东莞校区</td><td class="sksjdd_XX">
+第3~8周 星期三 第10-12节@李老师                            <br>
+第9~13周 星期三 第10-29节@周                            <br>
+                         
+                         </td><td class="rkjs_XX">
+李老师                                         <br>
+周                                         <br>
+                         </td><td class="xf_XX">2.0</td><td class="xkfs_XX">限选</td><td class="xxrs_XX">5</td><td class="yxrs_XX">0</td><td>
+                                <button id="selectBtn40" class="select_Btn btn" onclick="selectCourse(this,40)">选择</button>
+                                                                                                                                                                   
+                      
+                         </td></tr>
+                     <tr><td class="kkkh_XX">kk20170319019</td><td class="kcmc_XX"><a href="javascript:popCourseDetails(41);">选修19</a></td><td class="xkxq_XX">湛江校区</td><td class="sksjdd_XX">
+第3~8周 星期三 第10-12节@李老师                            <br>
+第9~13周 星期三 第10-30节@周                            <br>
+                         
+                         </td><td class="rkjs_XX">
+李老师                                         <br>
+周                                         <br>
+                         </td><td class="xf_XX">2.0</td><td class="xkfs_XX">抢课</td><td class="xxrs_XX">5</td><td class="yxrs_XX">0</td><td>
+                                <button id="selectBtn41" class="select_Btn btn" onclick="selectCourse(this,41)">选择</button>
+                                                                                                                                                                   
+                      
+                         </td></tr>
+                     <tr><td class="kkkh_XX">kk20170319020</td><td class="kcmc_XX"><a href="javascript:popCourseDetails(42);">选修20</a></td><td class="xkxq_XX">主校区</td><td class="sksjdd_XX">
+第3~8周 星期三 第10-12节@李老师                            <br>
+第9~13周 星期三 第10-31节@周                            <br>
+                         
+                         </td><td class="rkjs_XX">
+李老师                                         <br>
+周                                         <br>
+                         </td><td class="xf_XX">2.0</td><td class="xkfs_XX">限选</td><td class="xxrs_XX">5</td><td class="yxrs_XX">0</td><td>
+                                <button id="selectBtn42" class="select_Btn btn" onclick="selectCourse(this,42)">选择</button>
+                                                                                                                                                                   
+                      
+                         </td></tr>
+                     <tr><td class="kkkh_XX">kk20170319021</td><td class="kcmc_XX"><a href="javascript:popCourseDetails(43);">选修21</a></td><td class="xkxq_XX">东莞校区</td><td class="sksjdd_XX">
+第3~8周 星期三 第10-12节@李老师                            <br>
+第9~13周 星期三 第10-32节@周                            <br>
+                         
+                         </td><td class="rkjs_XX">
+李老师                                         <br>
+周                                         <br>
+                         </td><td class="xf_XX">2.0</td><td class="xkfs_XX">抢课</td><td class="xxrs_XX">5</td><td class="yxrs_XX">0</td><td>
+                                <button id="selectBtn43" class="select_Btn btn" onclick="selectCourse(this,43)">选择</button>
+                                                                                                                                                                   
+                      
+                         </td></tr>
+            
+        </tbody>
+    </table>
+</div>
+<div class="widget">
+    <h4 class="title">公共课 · 课程列表（<span id="numberOfSelected">7&nbsp;</span>门）</h4>
+    <button class="collapseBtn btn"><i class="xk-shouqi xsxkxtFont"></i>收起</button>
+    <table id="xxTab" class="widgetTable">
+        <thead>
+            <tr><th>开课课号</th><th>课程名称</th><th>选课校区</th><th>上课时间地点</th><th>任课教师</th><th>学分</th><th>选课方式</th><th>限选人数</th><th>已选人数</th><th>操作</th></tr>
+        </thead>
+        <tbody>
+                     <tr><td class="kkkh_XX">kk20170319022</td><td class="kcmc_XX"><a href="javascript:popCourseDetails(44);">公共课1</a></td><td class="xkxq_XX">湛江校区</td><td class="sksjdd_XX">
+第3~8周 星期三 第10-12节@李老师                            <br>
+第9~13周 星期三 第10-33节@周                            <br>
+                         
+                         </td><td class="rkjs_XX">
+李老师                                         <br>
+周                                         <br>
+                         </td><td class="xf_XX">3.0</td><td class="xkfs_XX">抢课</td><td class="xxrs_XX">5</td><td class="yxrs_XX">0</td><td>
+                                <button id="selectBtn44" class="select_Btn btn" onclick="selectCourse(this,44)">选择</button>
+                                                                                                                                                                   
+                      
+                         </td></tr>
+                     <tr><td class="kkkh_XX">kk20170319023</td><td class="kcmc_XX"><a href="javascript:popCourseDetails(45);">公共课2</a></td><td class="xkxq_XX">主校区</td><td class="sksjdd_XX">
+第3~8周 星期三 第10-12节@李老师                            <br>
+第9~13周 星期三 第10-34节@周                            <br>
+                         
+                         </td><td class="rkjs_XX">
+李老师                                         <br>
+周                                         <br>
+                         </td><td class="xf_XX">3.0</td><td class="xkfs_XX">抢课</td><td class="xxrs_XX">5</td><td class="yxrs_XX">0</td><td>
+                                <button id="selectBtn45" class="select_Btn btn" onclick="selectCourse(this,45)">选择</button>
+                                                                                                                                                                   
+                      
+                         </td></tr>
+                     <tr><td class="kkkh_XX">kk20170319024</td><td class="kcmc_XX"><a href="javascript:popCourseDetails(46);">公共课3</a></td><td class="xkxq_XX">东莞校区</td><td class="sksjdd_XX">
+第3~8周 星期三 第10-12节@李老师                            <br>
+第9~13周 星期三 第10-35节@周                            <br>
+                         
+                         </td><td class="rkjs_XX">
+李老师                                         <br>
+周                                         <br>
+                         </td><td class="xf_XX">3.0</td><td class="xkfs_XX">抢课</td><td class="xxrs_XX">5</td><td class="yxrs_XX">0</td><td>
+                                <button id="selectBtn46" class="select_Btn btn" onclick="selectCourse(this,46)">选择</button>
+                                                                                                                                                                   
+                      
+                         </td></tr>
+                     <tr><td class="kkkh_XX">kk20170319025</td><td class="kcmc_XX"><a href="javascript:popCourseDetails(47);">公共课4</a></td><td class="xkxq_XX">主校区</td><td class="sksjdd_XX">
+第3~8周 星期三 第10-12节@李老师                            <br>
+第9~13周 星期三 第10-36节@周                            <br>
+                         
+                         </td><td class="rkjs_XX">
+李老师                                         <br>
+周                                         <br>
+                         </td><td class="xf_XX">3.0</td><td class="xkfs_XX">抢课</td><td class="xxrs_XX">5</td><td class="yxrs_XX">0</td><td>
+                                <button id="selectBtn47" class="select_Btn btn" onclick="selectCourse(this,47)">选择</button>
+                                                                                                                                                                   
+                      
+                         </td></tr>
+                     <tr><td class="kkkh_XX">kk20170319026</td><td class="kcmc_XX"><a href="javascript:popCourseDetails(48);">公共课5</a></td><td class="xkxq_XX">东莞校区</td><td class="sksjdd_XX">
+第3~8周 星期三 第10-12节@李老师                            <br>
+第9~13周 星期三 第10-37节@周                            <br>
+                         
+                         </td><td class="rkjs_XX">
+李老师                                         <br>
+周                                         <br>
+                         </td><td class="xf_XX">3.0</td><td class="xkfs_XX">抢课</td><td class="xxrs_XX">5</td><td class="yxrs_XX">0</td><td>
+                                <button id="selectBtn48" class="select_Btn btn" onclick="selectCourse(this,48)">选择</button>
+                                                                                                                                                                   
+                      
+                         </td></tr>
+                     <tr><td class="kkkh_XX">kk20170319027</td><td class="kcmc_XX"><a href="javascript:popCourseDetails(49);">公共课6</a></td><td class="xkxq_XX">湛江校区</td><td class="sksjdd_XX">
+第3~8周 星期三 第10-12节@李老师                            <br>
+第9~13周 星期三 第10-38节@周                            <br>
+                         
+                         </td><td class="rkjs_XX">
+李老师                                         <br>
+周                                         <br>
+                         </td><td class="xf_XX">3.0</td><td class="xkfs_XX">抢课</td><td class="xxrs_XX">5</td><td class="yxrs_XX">0</td><td>
+                                <button id="selectBtn49" class="select_Btn btn" onclick="selectCourse(this,49)">选择</button>
+                                                                                                                                                                   
+                      
+                         </td></tr>
+                     <tr><td class="kkkh_XX">kk20170319028</td><td class="kcmc_XX"><a href="javascript:popCourseDetails(50);">公共课7</a></td><td class="xkxq_XX">主校区</td><td class="sksjdd_XX">
+第3~8周 星期三 第10-12节@李老师                            <br>
+第9~13周 星期三 第10-39节@周                            <br>
+                         
+                         </td><td class="rkjs_XX">
+李老师                                         <br>
+周                                         <br>
+                         </td><td class="xf_XX">3.0</td><td class="xkfs_XX">抢课</td><td class="xxrs_XX">5</td><td class="yxrs_XX">0</td><td>
+                                <button id="selectBtn50" class="select_Btn btn" onclick="selectCourse(this,50)">选择</button>
+                                                                                                                                                                   
+                      
+                         </td></tr>
+            
+        </tbody>
+    </table>
+</div>
+<div class="widget">
+    <h4 class="title">专业课 · 课程列表（<span id="numberOfSelected">7&nbsp;</span>门）</h4>
+    <button class="collapseBtn btn"><i class="xk-shouqi xsxkxtFont"></i>收起</button>
+    <table id="xxTab" class="widgetTable">
+        <thead>
+            <tr><th>开课课号</th><th>课程名称</th><th>选课校区</th><th>上课时间地点</th><th>任课教师</th><th>学分</th><th>选课方式</th><th>限选人数</th><th>已选人数</th><th>操作</th></tr>
+        </thead>
+        <tbody>
+                     <tr><td class="kkkh_XX">kk20170319029</td><td class="kcmc_XX"><a href="javascript:popCourseDetails(51);">专业课1</a></td><td class="xkxq_XX">东莞校区</td><td class="sksjdd_XX">
+第3~8周 星期三 第10-12节@李老师                            <br>
+第9~13周 星期三 第10-40节@周                            <br>
+                         
+                         </td><td class="rkjs_XX">
+李老师                                         <br>
+周                                         <br>
+                         </td><td class="xf_XX">4.5</td><td class="xkfs_XX">抢课</td><td class="xxrs_XX">5</td><td class="yxrs_XX">0</td><td>
+                                <button id="selectBtn51" class="select_Btn btn" onclick="selectCourse(this,51)">选择</button>
+                                                                                                                                                                   
+                      
+                         </td></tr>
+                     <tr><td class="kkkh_XX">kk20170319030</td><td class="kcmc_XX"><a href="javascript:popCourseDetails(52);">专业课2</a></td><td class="xkxq_XX">湛江校区</td><td class="sksjdd_XX">
+第3~8周 星期三 第10-12节@李老师                            <br>
+第9~13周 星期三 第10-41节@周                            <br>
+                         
+                         </td><td class="rkjs_XX">
+李老师                                         <br>
+周                                         <br>
+                         </td><td class="xf_XX">4.0</td><td class="xkfs_XX">抢课</td><td class="xxrs_XX">5</td><td class="yxrs_XX">0</td><td>
+                                <button id="selectBtn52" class="select_Btn btn" onclick="selectCourse(this,52)">选择</button>
+                                                                                                                                                                   
+                      
+                         </td></tr>
+                     <tr><td class="kkkh_XX">kk20170319031</td><td class="kcmc_XX"><a href="javascript:popCourseDetails(53);">专业课3</a></td><td class="xkxq_XX">主校区</td><td class="sksjdd_XX">
+第3~8周 星期三 第10-12节@李老师                            <br>
+第9~13周 星期三 第10-42节@周                            <br>
+                         
+                         </td><td class="rkjs_XX">
+李老师                                         <br>
+周                                         <br>
+                         </td><td class="xf_XX">4.5</td><td class="xkfs_XX">抢课</td><td class="xxrs_XX">5</td><td class="yxrs_XX">0</td><td>
+                                <button id="selectBtn53" class="select_Btn btn" onclick="selectCourse(this,53)">选择</button>
+                                                                                                                                                                   
+                      
+                         </td></tr>
+                     <tr><td class="kkkh_XX">kk20170319032</td><td class="kcmc_XX"><a href="javascript:popCourseDetails(54);">专业课4</a></td><td class="xkxq_XX">东莞校区</td><td class="sksjdd_XX">
+第3~8周 星期三 第10-12节@李老师                            <br>
+第9~13周 星期三 第10-43节@周                            <br>
+                         
+                         </td><td class="rkjs_XX">
+李老师                                         <br>
+周                                         <br>
+                         </td><td class="xf_XX">4.0</td><td class="xkfs_XX">抢课</td><td class="xxrs_XX">5</td><td class="yxrs_XX">0</td><td>
+                                <button id="selectBtn54" class="select_Btn btn" onclick="selectCourse(this,54)">选择</button>
+                                                                                                                                                                   
+                      
+                         </td></tr>
+                     <tr><td class="kkkh_XX">kk20170319033</td><td class="kcmc_XX"><a href="javascript:popCourseDetails(55);">专业课5</a></td><td class="xkxq_XX">主校区</td><td class="sksjdd_XX">
+第3~8周 星期三 第10-12节@李老师                            <br>
+第9~13周 星期三 第10-44节@周                            <br>
+                         
+                         </td><td class="rkjs_XX">
+李老师                                         <br>
+周                                         <br>
+                         </td><td class="xf_XX">4.5</td><td class="xkfs_XX">抢课</td><td class="xxrs_XX">5</td><td class="yxrs_XX">0</td><td>
+                                <button id="selectBtn55" class="select_Btn btn" onclick="selectCourse(this,55)">选择</button>
+                                                                                                                                                                   
+                      
+                         </td></tr>
+                     <tr><td class="kkkh_XX">kk20170319034</td><td class="kcmc_XX"><a href="javascript:popCourseDetails(56);">专业课6</a></td><td class="xkxq_XX">东莞校区</td><td class="sksjdd_XX">
+第3~8周 星期三 第10-12节@李老师                            <br>
+第9~13周 星期三 第10-45节@周                            <br>
+                         
+                         </td><td class="rkjs_XX">
+李老师                                         <br>
+周                                         <br>
+                         </td><td class="xf_XX">4.5</td><td class="xkfs_XX">抢课</td><td class="xxrs_XX">5</td><td class="yxrs_XX">0</td><td>
+                                <button id="selectBtn56" class="select_Btn btn" onclick="selectCourse(this,56)">选择</button>
+                                                                                                                                                                   
+                      
+                         </td></tr>
+                     <tr><td class="kkkh_XX">kk20170319035</td><td class="kcmc_XX"><a href="javascript:popCourseDetails(57);">专业课7</a></td><td class="xkxq_XX">湛江校区</td><td class="sksjdd_XX">
+第3~8周 星期三 第10-12节@李老师                            <br>
+第9~13周 星期三 第10-46节@周                            <br>
+                         
+                         </td><td class="rkjs_XX">
+李老师                                         <br>
+周                                         <br>
+                         </td><td class="xf_XX">4.0</td><td class="xkfs_XX">抢课</td><td class="xxrs_XX">5</td><td class="yxrs_XX">0</td><td>
+                                <button id="selectBtn57" class="select_Btn btn" onclick="selectCourse(this,57)">选择</button>
+                                                                                                                                                                   
+                      
+                         </td></tr>
+            
+        </tbody>
+    </table>
+</div>
+<div class="widget">
+    <h4 class="title">指定选修课 · 课程列表（<span id="numberOfSelected">4&nbsp;</span>门）</h4>
+    <button class="collapseBtn btn"><i class="xk-shouqi xsxkxtFont"></i>收起</button>
+    <table id="xxTab" class="widgetTable">
+        <thead>
+            <tr><th>开课课号</th><th>课程名称</th><th>选课校区</th><th>上课时间地点</th><th>任课教师</th><th>学分</th><th>选课方式</th><th>限选人数</th><th>已选人数</th><th>操作</th></tr>
+        </thead>
+        <tbody>
+                     <tr><td class="kkkh_XX">kk20170319036</td><td class="kcmc_XX"><a href="javascript:popCourseDetails(58);">指定选修课1</a></td><td class="xkxq_XX">主校区</td><td class="sksjdd_XX">
+第3~8周 星期三 第10-12节@李老师                            <br>
+第9~13周 星期三 第10-47节@周                            <br>
+                         
+                         </td><td class="rkjs_XX">
+李老师                                         <br>
+周                                         <br>
+                         </td><td class="xf_XX">3.0</td><td class="xkfs_XX">抢课</td><td class="xxrs_XX">5</td><td class="yxrs_XX">0</td><td>
+                                <button id="selectBtn58" class="select_Btn btn" onclick="selectCourse(this,58)">选择</button>
+                                                                                                                                                                   
+                      
+                         </td></tr>
+                     <tr><td class="kkkh_XX">kk20170319037</td><td class="kcmc_XX"><a href="javascript:popCourseDetails(59);">指定选修课2</a></td><td class="xkxq_XX">东莞校区</td><td class="sksjdd_XX">
+第3~8周 星期三 第10-12节@李老师                            <br>
+第9~13周 星期三 第10-48节@周                            <br>
+                         
+                         </td><td class="rkjs_XX">
+李老师                                         <br>
+周                                         <br>
+                         </td><td class="xf_XX">3.0</td><td class="xkfs_XX">抢课</td><td class="xxrs_XX">5</td><td class="yxrs_XX">0</td><td>
+                                <button id="selectBtn59" class="select_Btn btn" onclick="selectCourse(this,59)">选择</button>
+                                                                                                                                                                   
+                      
+                         </td></tr>
+                     <tr><td class="kkkh_XX">kk20170319038</td><td class="kcmc_XX"><a href="javascript:popCourseDetails(60);">指定选修课3</a></td><td class="xkxq_XX">湛江校区</td><td class="sksjdd_XX">
+第3~8周 星期三 第10-12节@李老师                            <br>
+第9~13周 星期三 第10-49节@周                            <br>
+                         
+                         </td><td class="rkjs_XX">
+李老师                                         <br>
+周                                         <br>
+                         </td><td class="xf_XX">3.5</td><td class="xkfs_XX">抢课</td><td class="xxrs_XX">5</td><td class="yxrs_XX">0</td><td>
+                                <button id="selectBtn60" class="select_Btn btn" onclick="selectCourse(this,60)">选择</button>
+                                                                                                                                                                   
+                      
+                         </td></tr>
+                     <tr><td class="kkkh_XX">kk20170319039</td><td class="kcmc_XX"><a href="javascript:popCourseDetails(61);">指定选修课4</a></td><td class="xkxq_XX">主校区</td><td class="sksjdd_XX">
+第3~8周 星期三 第10-12节@李老师                            <br>
+第9~13周 星期三 第10-50节@周                            <br>
+                         
+                         </td><td class="rkjs_XX">
+李老师                                         <br>
+周                                         <br>
+                         </td><td class="xf_XX">3.5</td><td class="xkfs_XX">抢课</td><td class="xxrs_XX">5</td><td class="yxrs_XX">0</td><td>
+                                <button id="selectBtn61" class="select_Btn btn" onclick="selectCourse(this,61)">选择</button>
+                                                                                                                                                                   
+                      
+                         </td></tr>
+            
+        </tbody>
+    </table>
+</div>
+<div class="widget">
+    <h4 class="title">专业基础课 · 课程列表（<span id="numberOfSelected">2&nbsp;</span>门）</h4>
+    <button class="collapseBtn btn"><i class="xk-shouqi xsxkxtFont"></i>收起</button>
+    <table id="xxTab" class="widgetTable">
+        <thead>
+            <tr><th>开课课号</th><th>课程名称</th><th>选课校区</th><th>上课时间地点</th><th>任课教师</th><th>学分</th><th>选课方式</th><th>限选人数</th><th>已选人数</th><th>操作</th></tr>
+        </thead>
+        <tbody>
+                     <tr><td class="kkkh_XX">kk20170319040</td><td class="kcmc_XX"><a href="javascript:popCourseDetails(62);">专业基础课1</a></td><td class="xkxq_XX">东莞校区</td><td class="sksjdd_XX">
+第3~8周 星期三 第10-12节@李老师                            <br>
+第9~13周 星期三 第10-51节@周                            <br>
+                         
+                         </td><td class="rkjs_XX">
+李老师                                         <br>
+周                                         <br>
+                         </td><td class="xf_XX">3.5</td><td class="xkfs_XX">抢课</td><td class="xxrs_XX">5</td><td class="yxrs_XX">0</td><td>
+                                <button id="selectBtn62" class="select_Btn btn" onclick="selectCourse(this,62)">选择</button>
+                                                                                                                                                                   
+                      
+                         </td></tr>
+                     <tr><td class="kkkh_XX">kk20170319041</td><td class="kcmc_XX"><a href="javascript:popCourseDetails(63);">专业基础课2</a></td><td class="xkxq_XX">主校区</td><td class="sksjdd_XX">
+第3~8周 星期三 第10-12节@李老师                            <br>
+第9~13周 星期三 第10-52节@周                            <br>
+                         
+                         </td><td class="rkjs_XX">
+李老师                                         <br>
+周                                         <br>
+                         </td><td class="xf_XX">3.5</td><td class="xkfs_XX">抢课</td><td class="xxrs_XX">5</td><td class="yxrs_XX">0</td><td>
+                                <button id="selectBtn63" class="select_Btn btn" onclick="selectCourse(this,63)">选择</button>
+                                                                                                                                                                   
+                      
+                         </td></tr>
+            
+        </tbody>
+    </table>
+</div>
+
+
+
+            <!-- 回到顶部按钮 -->
+            <a class="goTop_Btn btn" href="javascript:scroll(0,0)"><i class="xk-fanhuidingbu xsxkxtFont"></i></a>
+
+</main>
+
+   
+
+    <script type="text/javascript">
+
+        // 弹出课程详细信息的弹出框和底部半透明遮罩
+        function popCourseDetails(course_offerred_id) {
+            //$(".courseDetails")[0].style.display = "block";
+           // document.getElementById("mask").style.display = "block";
+            var url = '/StudentsCourseSelection/getCourseInfo?course_offerred_id=' + course_offerred_id;
+                var sh = screen.height;
+                var sw = screen.width;
+                var wh = 550;
+                var ww = 550;
+                var wt = (sh - wh) / 2;
+                var wl = (sw - ww) / 2;
+                var popWin = window.open(url, 'kkkhWin', 'resizable=1,scrollbars=1,top=' + wt + ',left=' + wl + ',width=' + ww + ',height=' + wh);
+
+        }
+
+
+        // 点击按钮关闭提示条or修改密码框
+        function colsePrompt() {
+            for (var i = 0; i < $('.closePrompt').length; i++) {
+                $('.closePrompt')[i].onclick = function () {
+                    this.parentNode.style.display = "none";
+
+                    if (this.id == "closePswModi" || this.id == "closeCourseDetails") {
+                        document.getElementById("mask").style.display = "none";
+                    }
+                };
+            }
+        }
+
+        // 点击修改密码弹出
+        function passwordModify() {
+            var oBtn = document.getElementById("xgmm");
+            oBtn.onclick = function () {
+                document.getElementById("mask").style.display = "block";
+                document.getElementById("passwordModify").style.display = "block";
+            };
+        }
+
+        // 点击修改密码
+        function subPswModi() {
+          
+           alert("修改成功");
+        }
+
+
+        // 点击收起展开表格
+        function CollapseOrShow_tab() {
+         //var aCollapseBtn = document.getElementsByClassName('collapseBtn');
+            //var aTab = document.getElementsByClassName('widgetTable');
+            var aCollapseBtn = getClassNames('collapseBtn', 'button');
+            var aTab = getClassNames('widgetTable', 'table');
+            for (var i = 0; i < aCollapseBtn.length; i++) {
+                aCollapseBtn[i].index = i;
+                aCollapseBtn[i].onclick = function () {
+                    aTab[this.index].style.display = (aTab[this.index].style.display == "none") ? "table" : "none";
+                    this.innerHTML = (this.innerHTML == '<i class="xk-shouqi xsxkxtFont"></i>收起') ? '<i class="xk-shouqi-copy xsxkxtFont"></i>展开' : '<i class="xk-shouqi xsxkxtFont"></i>收起';
+                };
+            }
+        }
+
+        // 点击选择按钮后按钮的css变化，另外在已选择课程的table最下面增加一行
+        function selectCourse(obj, course_offerred_id) {
+           var oTab = document.getElementById('presentSelectTab');
+                        // 按钮的样式变化
+                        this.className = "disSelect_Btn btn";
+                        this.innerHTML = "已选择";
+
+                        // 在已选择课程的table最下面增加一行
+                        var oldTr = obj.parentNode.parentNode;
+                        var arr = [];
+                    var yxrs_XX = parseInt(oldTr.cells[8].innerText);
+                       oldTr.cells[8].innerText = yxrs_XX + 1;
+                        //arr[0] = oldTr.cells[0].innerHTML;
+                        //arr[1] = oldTr.cells[1].innerHTML;
+                        //arr[2] = oldTr.cells[3].innerHTML;
+                        //arr[3] = oldTr.cells[4].innerHTML;
+                        //arr[4] = oldTr.cells[5].innerHTML;
+                        //arr[5] = "否";
+                        //arr[6] = '<button class="del_Btn btn" onclick="delCourse(this,' + course_offerred_id + ',' + json['tb_course_selection_id'] + ')">删除</button>';
+                        var oTr = document.createElement("tr");
+                        //oTr.innerHTML = '<td class="kkkh_select">' + arr[0] + '</td><td class="kcmc_select">' + arr[1] + '</td><td class="sksjdd_select">' + arr[2] + '</td><td class="rkjs_select">' + arr[3] + '</td><td class="xf_select">' + arr[4] + '</td><td class="sfcx_select">' + arr[5] + '</td><td>' + arr[6] + '</td>';
+                    
+
+                        oTr.insertCell().innerHTML = oldTr.cells[0].innerHTML;
+                        oTr.insertCell().innerHTML = oldTr.cells[1].innerHTML;
+                        oTr.insertCell().innerHTML = oldTr.cells[3].innerHTML;
+                        oTr.insertCell().innerHTML = oldTr.cells[4].innerHTML;
+                        oTr.insertCell().innerHTML = oldTr.cells[5].innerHTML;
+                        oTr.insertCell().innerHTML = "否";
+                        oTr.insertCell().innerHTML = '<button class="del_Btn btn" onclick="delCourse(this,' + course_offerred_id + ',' + 1+ ')">删除</button>';
+
+                        oTab.tBodies[0].appendChild(oTr);
+                        obj.disabled = true;
+                        removeClass(obj, "select_Btn");
+                        var nullTr = document.getElementById("nullTr");
+                        if (nullTr) {
+                            nullTr.parentNode.removeChild(nullTr);
+                        }
+                        var numberOfPresentSelect = document.getElementById("numberOfPresentSelect");
+                        numberOfPresentSelect.innerHTML = parseInt(numberOfPresentSelect.innerHTML) + 1;
+        }
+        function hasClass(element, className) {
+            var reg = new RegExp('(\\s|^)' + className + '(\\s|$)');
+            return element.className.match(reg);
+        }
+        function addClass(element, className) {
+            if (!this.hasClass(element, className)) {
+                element.className += " " + className;
+            }
+        }
+
+        function removeClass(element, className) {
+            if (hasClass(element, className)) {
+                var reg = new RegExp('(\\s|^)' + className + '(\\s|$)');
+                element.className = element.className.replace(reg, ' ');
+            }
+        }
+
+        //// 点击选择按钮后按钮的css变化，另外在已选择课程的table最下面增加一行
+        //function selectCourse() {
+        //    var aBtn = document.getElementsByClassName('select_Btn');
+        //    var oTab = document.getElementById('selectedTab');
+
+        //    for (var i = 0; i < aBtn.length; i++) {
+        //        aBtn[i].onclick = function () {
+        //            // 按钮的样式变化
+        //            this.className = "disSelect_Btn btn";
+        //            this.innerHTML = "已选择";
+
+        //            // 在已选择课程的table最下面增加一行
+        //            var oldTr = this.parentNode.parentNode;
+        //            var arr = [];
+        //            arr[0] = oldTr.cells[0].innerHTML;
+        //            arr[1] = oldTr.cells[1].innerHTML;
+        //            arr[2] = oldTr.cells[3].innerHTML;
+        //            arr[3] = oldTr.cells[4].innerHTML;
+        //            arr[4] = oldTr.cells[5].innerHTML;
+        //            arr[5] = "否";
+        //            arr[6] = '<button class="del_Btn btn">删除</button>';
+        //            var oTr = document.createElement("tr");
+        //            oTr.innerHTML = '<td class="kkkh_select">' + arr[0] + '</td><td class="kcmc_select">' + arr[1] + '</td><td class="sksjdd_select">' + arr[2] + '</td><td class="rkjs_select">' + arr[3] + '</td><td class="xf_select">' + arr[4] + '</td><td class="sfcx_select">' + arr[5] + '</td><td>' + arr[6] + '</td>';
+        //            oTab.tBodies[0].appendChild(oTr);
+        //        };
+        //    }
+        //}
+
+        //删除选择课程
+        function delCourse(obj,course_offerred_id,course_offerred_selection_id) {
+           var table = obj.parentNode.parentNode.parentNode;
+                        table.removeChild(obj.parentNode.parentNode);
+                         if (table.getElementsByTagName("tr").length < 1) {
+                            var oTr = document.createElement("tr");
+                            oTr.id = "nullTr"
+                            //oTr.innerHTML = 
+                            oTr.insertCell().innerHTML = '没有符合条件的记录';
+                            oTr.cells[0].colSpan = "7";
+                            table.appendChild(oTr);
+                        }
+                        var selectBtn = document.getElementById("selectBtn" + course_offerred_id);
+                        oldTr=selectBtn.parentNode.parentNode;
+                        var yxrs_XX=parseInt(oldTr.cells[8].innerText);
+                        oldTr.cells[8].innerText=yxrs_XX-1;
+                        selectBtn.disabled = false;
+                        addClass(selectBtn, "select_Btn");
+						  var numberOfPresentSelect = document.getElementById("numberOfPresentSelect");
+                        numberOfPresentSelect.innerHTML = parseInt(numberOfPresentSelect.innerHTML) -1;
+        }
+
+        function progressBarShow(){
+            document.getElementById("mask").style.display = "block";
+            document.getElementById("load-wrapp").style.display = "block";
+        }
+        function progressBarHide(){
+            document.getElementById("mask").style.display = "none";
+            document.getElementById("load-wrapp").style.display = "none";
+        }
+        CollapseOrShow_tab();
+        colsePrompt();
+        passwordModify();
+        //subPswModi();
+        //selectCourse();
+        //delCourse();
+
+                function getClassNames(classStr, tagName) {
+            if (document.getElementsByClassName) {
+                return document.getElementsByClassName(classStr)
+            } else {
+                var nodes = document.getElementsByTagName(tagName), ret = [];
+                for (i = 0; i < nodes.length; i++) {
+                    if (hasClass1(nodes[i], classStr)) {
+                        ret.push(nodes[i])
+                    }
+                }
+                return ret;
+            }
+        }
+        function hasClass1(tagStr, classStr) {
+            var arr = tagStr.className.split(/\s+/);  //这个正则表达式是因为class可以有多个,判断是否包含
+            for (var i = 0; i < arr.length; i++) {
+                if (arr[i] == classStr) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    </script>
+
+
+
+
+
+   <!--  <script type="text/javascript">
+        // border-radius for IE8
+        $('.select_Btn').corner();
+        $('.logo').corner();
+        $('.mainContent').corner();
+    </script> -->
+    </div>
+</body></html>

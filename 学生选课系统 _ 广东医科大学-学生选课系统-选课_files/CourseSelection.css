@@ -1,0 +1,349 @@
+/*normalizeCSS*/
+@import url(normalize.css);
+body{
+    background:#e5e5e5;
+    font-family: 'Microsoft YaHei','微软雅黑',sans-serif;
+    font-size: 12px;
+}
+.container{
+    width: 100%;
+}
+
+/* 公共控件 开始 */
+.btn{
+    border:none;
+    outline: none;
+    cursor: pointer;
+    /*     用户不选中文本，造成不必要的麻烦 */
+     -moz-user-select: none;
+      -ms-user-select: none;
+  -webkit-user-select: none; 
+}
+.Prompt{
+    position: relative;
+    text-align: center;
+    height:4em;
+    width: 100%;
+    background: #ffc864;
+    font-size: 14px;
+}
+.Prompt p{
+    color:#e41a1a;
+    display: inline-block;
+    line-height: 4em;
+    margin:0;
+}
+.closePrompt{
+    background: transparent;
+    outline: none;
+    position: absolute;
+    right:8px;
+    top:8px;
+    font-size: 14px;
+    color:#e41a1a;
+}
+.PopupBox{
+    width: 35%;
+    max-width: 500px;
+    min-width: 500px;
+    border-radius: 5px;
+    background: #fff;
+    position: fixed;
+    z-index: 9999;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.PopupBox-title{
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px; 
+    background:#43B29F;
+    color:#fff;
+}
+.widget{
+    height: auto;
+    width: 90%;
+    max-width: 1350px;
+    margin:35px auto;
+    display: table;
+    background:#fff;
+    border-radius: 8px;
+    border:1px solid #D1D2D6;
+    box-shadow: 1px 1px 10px #D1D2D6;
+    position: relative;
+}
+.title{
+    font-weight: normal;
+    margin:0;
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    text-align: left;
+    text-indent:1.5em;  
+    border-bottom: 1px solid #E7E8EC;
+}
+/* 公共控件结束 */
+
+
+
+
+/* 顶部温馨提示条prompt开始 */
+.xk-gantanhao{
+    padding: 3px;
+    color: #ac1c1c;
+}
+#closePswModi,
+#closeCourseDetails{
+    margin-top: 3px;
+}
+#closePswModi i,
+#closeCourseDetails i{
+    color: #fff;
+    font-size: 11px;
+}
+.Prompt strong{
+    color: #ac1c1c;
+}
+.warn{
+    padding:0 5px;
+    vertical-align: middle;
+}
+/* 顶部温馨提示条prompt结束 */
+
+
+
+/* 个人信息开始 */
+header ul{
+    box-sizing: border-box;
+    width: 100%;
+    color: #68778C;
+    margin:0;
+    padding-left: 5%;
+    height: 60px;
+    background: #2B2E3D;
+    font-size: 11px;
+}
+header ul li{
+    line-height: 60px;
+    margin:0 25px;
+    float: left;
+    text-indent: -1px;
+}
+/* 个人信息结束 */
+
+
+
+/* 修改密码和注销开始 */
+.userInfoModify{
+    margin-right: 5%;
+    float: right;
+    display:inline-block;   /*浮动元素垂直居中：display：inline-block;*/
+    height: 60px;
+    line-height: 60px;
+}
+.userInfoModify button{
+    background:transparent;
+    color:#fff;
+}
+.userInfoModify a{
+    background:transparent;
+    color:#fff;
+    text-decoration: none;
+    padding-left: 10px;
+}
+.userInfoModify a:active{
+    color:#ddd;
+}
+.userInfoModify i{
+    padding:3px;
+}
+/* 修改密码和注销结束 */
+
+
+/* 修改密码的弹出框开始 */
+.left{
+    float:left;
+    text-align: right;
+    width: 38%;
+    font-size:14px; 
+    margin-right: 5px;
+    line-height: 35px;
+    color: #999;
+}
+.pwModiContent{
+    margin-top: 3em;
+}
+.pwModiContent div{
+    margin-bottom:10px;
+}
+.pwModiContent input{
+    text-indent: 1em;
+    outline: none;
+    height: 35px;
+    width: 220px;
+    border:1px solid #ddd;
+}
+.pwModiContent input:focus{
+    box-shadow: 1px 1px 15px #D1D2D6;
+}
+.pwModiContent div:last-child{
+    width: 73%;
+    margin:2em auto 3em auto;   
+}
+.pwModiContent button{
+    font-size: 14px;
+    font-weight: 800;
+/*     margin-top: 20px; */
+    background:#43B29F;
+    color:#fff;
+    border-radius: 5px;
+    height: 40px;
+    width: 100%;
+}
+/* 修改密码的弹出框开始 */
+
+
+
+
+/* 具体课程信息的弹出框开始*/
+.courseDetails{
+    width: 550px;
+    height: 500px;
+}
+.courseDetails h4{
+/*     box-shadow: 0px 2px 0px 1px 10px #000; */
+}
+.courseDetails-content{
+    height: 455px;
+    overflow: auto;
+}
+.courseDetails-content table{
+    border-collapse: collapse;
+    margin-right: 40px;
+}
+.courseDetails-content table th{
+    width: 27%;
+    text-align: right;
+/*     background: #F4F5F7; */
+/*     border-right: 1px solid #d4d8da; */
+/* 	border-bottom: 1px solid #d4d8da; */
+}
+.courseDetails-content td{
+    text-align: left;
+    padding-left:10px;
+    
+    
+/*     border-left: 2px solid green; */
+/*     border-bottom:1px solid #ccc; */
+}
+/* 具体课程信息的弹出框结束*/
+
+
+
+
+/* 表格开始*/
+.widget h4{
+    color: #B5B5B5;
+    background:#F4F5F7;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px; 
+}
+.collapseBtn{
+    color: #B5B5B5;
+    vertical-align: middle;
+    position: absolute;
+    right: 1.5em;
+    top:12px;
+    background:transparent;
+    border:none;
+}
+.collapseBtn i{
+    padding:5px;
+}
+.widget table{
+    margin:30px auto;
+    display: table;
+    width: 92%;
+    border-collapse: separate !important; /*border-radius只能和border-collapse：spearate;共存，
+    因为选择了将border们collapse起来border-collapse:collapse;
+    说明border并没有太大用处，给border设置radius自然是没用的*/
+    border-spacing: 0;  
+}
+.widget thead th{
+    background: #43B29F;/*如果要设置每个th的两个border-radius的话，这个背景色只能设置在th里，不能设置在thead里，
+                        因为th的图层层级比tr高，tr比thead高*/
+    color:#fff;
+}
+.widget thead th{
+    border-radius: 8px 8px 0 0;
+    -moz-border-radius: 8px 8px 0 0;
+    -webkit-border-radius: 8px 8px 0 0;
+}
+
+.widget table th,
+.widget table td{
+    text-align: center;
+    line-height: 1.5;
+    padding:10px 5px;
+}
+.widget tbody td{
+	border-right: 1px solid #d4d8da;
+	border-bottom: 1px solid #d4d8da;
+}
+.widget tbody tr td:nth-child(1){
+    border-left: 1px solid #d4d8da;
+}
+.widget table button{
+    height:25px;
+    width:50px;
+    border-radius: 3px;
+    margin:0 5px;
+    font-size: 11px;
+}
+.select_Btn{
+    background:#43B29F;
+    color:#fff;
+}
+.select_Btn:active,
+.pwModiContent button:active{
+    background:#2b8e7d;
+}
+.disSelect_Btn{
+    background:#ddd;
+    color: #797979;
+    cursor:text;
+}
+.del_Btn{
+    background: #dd422c;
+    color:#fff;
+}
+.del_Btn:active{
+    background: #EF8150;
+}
+.widget tbody tr:hover{
+    background: #F4F5F7;
+}
+/* 表格结束 */
+
+
+
+/* 回到顶部按钮开始 */
+.goTop_Btn{
+    position: fixed;
+    right:15px;
+    bottom:15px;
+    height: 40px;
+    width: 40px;
+    background:#2B2E3D;
+    color: #fff;
+    opacity: 0.5;
+    filter:alpha(opacity:50);
+    text-decoration: none;
+}
+.goTop_Btn i{
+    line-height: 40px;
+    margin:0 11px;
+}
+/* 回到顶部按钮结束 */
+
+
